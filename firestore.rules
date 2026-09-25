@@ -1,0 +1,58 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global deny-by-default catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'l01403016@gmail.com' ||
+        request.auth.token.email == 'aditipandeynke18@gmail.com'
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // User profile documents
+    match /users/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin(); // Admin can view registered patient users
+      allow create: if (isOwner(userId) || isAdmin()) 
+        && request.resource.data.id == userId
+        && request.resource.data.email is string
+        && request.resource.data.name is string;
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Patient Appointment records
+    match /appointments/{appointmentId} {
+      allow get: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+      allow list: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+      allow create: if isSignedIn() 
+        && (request.resource.data.userId == request.auth.uid || isAdmin())
+        && request.resource.data.id == appointmentId
+        && request.resource.data.patientName is string
+        && request.resource.data.date is string
+        && request.resource.data.timeSlot is string;
+      allow update: if (isSignedIn() 
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid) || isAdmin();
+      allow delete: if isAdmin();
+    }
+  }
+}

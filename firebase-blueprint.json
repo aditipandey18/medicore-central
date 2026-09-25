@@ -1,0 +1,151 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Patient user profile and contact details",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique Firebase Authentication UID"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address"
+        },
+        "name": {
+          "type": "string",
+          "description": "User full legal name"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Contact telephone number"
+        },
+        "dob": {
+          "type": "string",
+          "description": "Date of birth"
+        },
+        "gender": {
+          "type": "string",
+          "description": "Gender identity"
+        },
+        "bloodGroup": {
+          "type": "string",
+          "description": "Blood group type"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of account creation"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last profile update"
+        }
+      },
+      "required": ["id", "email", "name"]
+    },
+    "Appointment": {
+      "title": "Appointment",
+      "description": "Medical appointment booking record for MediCore Central",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Appointment reference identifier"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the patient"
+        },
+        "patientName": {
+          "type": "string",
+          "description": "Patient full name"
+        },
+        "patientEmail": {
+          "type": "string",
+          "description": "Patient contact email"
+        },
+        "patientPhone": {
+          "type": "string",
+          "description": "Patient contact phone"
+        },
+        "patientDob": {
+          "type": "string",
+          "description": "Patient date of birth"
+        },
+        "patientGender": {
+          "type": "string",
+          "description": "Patient gender"
+        },
+        "departmentId": {
+          "type": "string",
+          "description": "Clinical department ID"
+        },
+        "departmentName": {
+          "type": "string",
+          "description": "Clinical department display name"
+        },
+        "doctorId": {
+          "type": "string",
+          "description": "Physician ID"
+        },
+        "doctorName": {
+          "type": "string",
+          "description": "Physician display name"
+        },
+        "date": {
+          "type": "string",
+          "description": "Scheduled date YYYY-MM-DD"
+        },
+        "timeSlot": {
+          "type": "string",
+          "description": "Scheduled consultation time slot"
+        },
+        "consultationType": {
+          "type": "string",
+          "description": "In-Person Clinic or Telehealth Video"
+        },
+        "symptoms": {
+          "type": "string",
+          "description": "Symptoms or reason for visit"
+        },
+        "urgency": {
+          "type": "string",
+          "description": "Priority level Routine, Urgent, or Follow-up"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status Confirmed, Completed, Cancelled, or Rescheduled"
+        },
+        "accessCode": {
+          "type": "string",
+          "description": "4-digit verification code"
+        },
+        "roomNumber": {
+          "type": "string",
+          "description": "Consultation clinic room"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Special medical instructions"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of booking"
+        }
+      },
+      "required": ["id", "userId", "patientName", "patientEmail", "departmentId", "doctorId", "date", "timeSlot", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Patient user profile documents"
+    },
+    "/appointments/{appointmentId}": {
+      "schema": "Appointment",
+      "description": "Scheduled patient medical appointments"
+    }
+  }
+}

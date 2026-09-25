@@ -1,0 +1,8 @@
+{
+  "name": "MediCore Central",
+  "description": "Premier tertiary healthcare facility offering compassionate clinical care, multi-specialty departments, distinguished medical specialists, seamless appointment booking, and secure patient data management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
